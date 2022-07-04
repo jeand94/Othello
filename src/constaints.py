@@ -1,3 +1,4 @@
 NONE = "O"
 WHITE = "W"
 BLACK = "B"
+UNDEFINED = -1000000

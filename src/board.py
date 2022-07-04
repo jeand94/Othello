@@ -5,10 +5,9 @@ from constaints import NONE,WHITE,BLACK
 
 
 class Board:
-    """docstring for Board."""
 
-# Starting from 1,1 to prevent a undefined error
-# when computing the slop
+    # Define Othello board using a dictionary
+    # and a user defined key
     board = {
         # Row,Column
         Position(1,1): NONE,
@@ -76,24 +75,40 @@ class Board:
         Position(8,7): NONE,
         Position(8,8): NONE,
     }
-
+    # Define a List of positions which
+    # will be the edges of the white chips
     white_chip_edges = [
         Position(5,5),
         Position(4,4)
     ]
+
+    # Define a List of positions which
+    # will be the edges of the white chips
     black_chip_edges = [
         Position(4,5),
         Position(5,4)
     ]
+    # When looking up or trying to find new Moves
+    # look for NONE neighbors of the the opponent
+    # that would generate a list of potential Moves
+    # this keeps us from having to iterate through
+    # the entire dictionary each time we are looking
+    # for a move. 
 
+    # Score of the black chip player
     black_chip_score = 2
+
+    # Score of the white chip player
     white_chip_score = 2
 
+    # Defining how this object will be printed
+    # as string element. Here we create a table
+    # board that will be used to play the game
     def __str__(self):
         itr = 1
         rows = [1, 2, 3, 4, 5, 6, 7, 8]
         output = ""
-        output = output + "-0-  -1- -2- -3- -4- -5- -6- -7- -8-\n"
+        output = output + "\n\n-0-  -1- -2- -3- -4- -5- -6- -7- -8-\n"
         for row in rows:
             output = output + (f"-{itr}- | " +
             f"{self.board.get(Position(row, 1 ))}" +
@@ -108,9 +123,12 @@ class Board:
 
             itr = itr + 1
 
+        output = output + (f"\n\nBlack player current score = {self.black_chip_score}")
+        output = output + (f"\nWhite player current score = {self.white_chip_score}\n\n")
+
         return output
 
-
+    # Function that will handle all of the moves
     def move(self,position,color,make_move):
         valid_moves = 0
         potential_moves = self.check_neighbors(position,color)
@@ -128,14 +146,15 @@ class Board:
             return False
         else:
             return True
-            
-        # return if move was successful or not
 
+    # Function that will change the color of the chips
+    # passed to it
     def flip_chips(self,move,color):
 
         for position in move.keys():
             self.board.update({position:color})
 
+    # Will get and return the opponenets chip color
     def get_opponent_color(self,color):
         opponent_color = NONE
 
@@ -146,6 +165,10 @@ class Board:
 
         return opponent_color
 
+    # Function that will look for valid Moves.
+    # Will return an empty dictionary if nothing was
+    # found. Else will return all of the positions
+    # for the move
     def connect_chips(self, move, position, color):
         is_done = False
         row = 0
@@ -155,7 +178,7 @@ class Board:
 
         opponent_color = self.get_opponent_color(color)
 
-        # get white oponent color
+
         for move_position in move.keys():
             if move.get(move_position) == opponent_color:
                 row = move_position.row
@@ -177,6 +200,7 @@ class Board:
                 move.clear()
                 is_done = True
 
+    # This will update the score of each player
     def update_score(self,move,color):
         added_chips = len(move) - 2
 
@@ -187,6 +211,7 @@ class Board:
             self.black_chip_score = self.black_chip_score - added_chips
             self.white_chip_score = self.white_chip_score + added_chips
 
+    # This will update the edge chips for each colored chip
     def update_edge_cases(self,move,color,position):
 
         for move_position in move.keys():
@@ -201,6 +226,9 @@ class Board:
                 self.white_chip_edges.remove(move_position)
                 self.black_chip_edges.append(move_position)
 
+    # Checks to if there are any opponent chips near
+    # the move position. Will return a list of All
+    # neighbors.
     def check_neighbors(self,position,color):
         row = position.row
         column = position.column

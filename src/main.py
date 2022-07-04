@@ -5,14 +5,20 @@ from position import Position
 from constaints import NONE,WHITE,BLACK
 
 
+user_chip = ''
+current_player = BLACK
+game_over = False
+game = Othello()
 
-
+# Introduction
 print ("Welcome to my Othello game. LETS PLAY!!\n")
+
+# Getting the game option
 print ("A: Multiplayer mode")
 print ("B: Single player mode")
 option = str(input("Enter your option >> "))
-user_chip = ''
-current_player = BLACK
+
+# Getting option if playing computer
 if option == 'B'or option == 'b':
     print("Please enter your color")
     print("W: white")
@@ -20,18 +26,14 @@ if option == 'B'or option == 'b':
     print("Note: Black gets first play!!!")
     user_chip = str(input("Enter your option >> "))
 elif option != 'A' and  option != 'a' :
+    # Error
     print("Wrong option was entered. Game will now exit")
     exit()
 
-
-
-
-#While loop for game
-game_over = False
-newgame = Othello()
+# Main while loop for the game
 while not game_over :
 
-    print(newgame.get_board())
+    print(game.get_board())
 
     if current_player == WHITE:
         print("White: Please select your move position")
@@ -41,7 +43,7 @@ while not game_over :
     row = int(input("Enter your row >> "))
     column = int(input("Enter your column: "))
 
-    move_complete = newgame.make_move(Position(row,column),current_player,True)
+    move_complete = game.make_move(Position(row,column),current_player,True)
 
     if not move_complete:
         print("\nThat was an invalid move. Please try again")
@@ -53,14 +55,4 @@ while not game_over :
             current_player = BLACK
     #game_over = Othello.is_game_over()
 
-#printBoard(newgame.board)
-
-
-
-
-
-
-#newgame.isValidMove(1,row,column)
-#sum=newgame.makeMove(1,row,column)
-print("made it")
 exit()
