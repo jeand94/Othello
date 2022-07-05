@@ -12,6 +12,9 @@ class MinMax :
     root_node = Node()
     infinity = 1000000
 
+    # Entry point for the minmax class
+    # where initilize the root and call
+    # the alpha beta prunnign algoritm
     def find_move(self,game):
         self.root_node = Node()
         self.root_node.nodes.clear()
@@ -26,7 +29,6 @@ class MinMax :
 
         return self.alpha_beta_algorithm()
 
-
     def alpha_beta_algorithm(self):
         best_value = self.infinity * -1
         beta = self.infinity
@@ -36,9 +38,6 @@ class MinMax :
         self.populate_children_nodes(self.root_node,self.color)
         children = self.root_node.nodes.copy()
 
-        # loop through those moves
-        # Make the move
-        # append to the Node child
         for child in children:
             value = self.min_alpha_beta(child, best_value, beta, level)
             if value > best_value:
@@ -47,6 +46,7 @@ class MinMax :
 
         return copy.deepcopy(best_node.last_move_made)
 
+    # Min Aplha beta prunning function
     def min_alpha_beta(self,node,alpha,beta,level):
         level = level + 1
         if level == self.depth:
@@ -68,6 +68,7 @@ class MinMax :
 
         return value
 
+    # Max aplha beta prunning section
     def max_alpha_beta(self,node,alpha,beta,level):
         level = level + 1
 
@@ -90,6 +91,7 @@ class MinMax :
             alpha = max(alpha, value)
         return value
 
+    # Sets who the computer player is
     def set_computer_color(self,color,depth):
         self.color = color
         self.depth = depth
@@ -99,12 +101,15 @@ class MinMax :
         else :
             self.opponent_color = WHITE
 
+    # This is the weight function for each game
+    # board found in the tree
     def node_evaluation(self,node):
-
+        # TODO: Implement weight and
+        # board evaluation function
         return 50
 
+    # Copies one node to another.
     def copy_from_parent(self,child_node,node):
-        #child_node.game = copy.deepcopy(node.game)
         for key,value in node.game.board.items():
             child_node.game.board[copy.deepcopy(key)] = copy.deepcopy(value)
 
@@ -120,7 +125,6 @@ class MinMax :
         # if the positions list is
         # not empty
         if bool(positions):
-
             for position in positions:
                 child_node = Node()
                 self.copy_from_parent(child_node,node)

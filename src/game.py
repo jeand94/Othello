@@ -270,6 +270,9 @@ class Game:
 
         return neighbors
 
+    # Will look at the edges of both the
+    # white chips and blakc chips to find
+    # potential moves
     def find_moves(self,active_color):
         positions = []
         valid_moves = []
@@ -290,7 +293,7 @@ class Game:
                     moves.append(copy.deepcopy(move))
 
 
-        # I have to iterate through the keys and check for a NONE value
+        # Get all of the keys
         for move in moves:
             positions.extend(move.keys())
 
@@ -298,8 +301,5 @@ class Game:
             if self.board.get(position) == NONE and \
                position not in valid_moves :
                 valid_moves.append(position)
-
-        # check for elements with NONE in new moves
-
 
         return valid_moves

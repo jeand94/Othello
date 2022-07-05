@@ -62,4 +62,4 @@ class Othello:
     # Checks if the game is over
     def is_game_over(self):
         return False
-        # Both Players dont have a move left
+        # TODO: Implement function
