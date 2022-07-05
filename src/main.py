@@ -1,11 +1,9 @@
-
-import time
 from othello import Othello
 from position import Position
 from constaints import NONE,WHITE,BLACK
 
 
-user_chip = ''
+user_chip = NONE
 current_player = BLACK
 game_over = False
 game = Othello()
@@ -30,20 +28,37 @@ elif option != 'A' and  option != 'a' :
     print("Wrong option was entered. Game will now exit")
     exit()
 
+if user_chip == 'w' or user_chip == 'w':
+    user_chip = WHITE
+    game.make_computer_active(BLACK)
+elif user_chip == 'b' or user_chip == 'b':
+    user_chip = BLACK
+    game.make_computer_active(WHITE)
+else :
+    print("Wrong option was entered. Game will now exit")
+    exit()
+
 # Main while loop for the game
 while not game_over :
 
-    print(game.get_board())
+    print(game.get_game_board())
 
-    if current_player == WHITE:
-        print("White: Please select your move position")
-    elif current_player == BLACK:
-        print("Black: Please select your move position")
+    if user_chip == NONE:
+        if current_player == WHITE:
+            print("White: Please select your move position")
+        elif current_player == BLACK:
+            print("Black: Please select your move position")
 
-    row = int(input("Enter your row >> "))
-    column = int(input("Enter your column: "))
-
-    move_complete = game.make_move(Position(row,column),current_player,True)
+        row = int(input("Enter your row >> "))
+        column = int(input("Enter your column: "))
+        move_complete = game.make_move(Position(row,column),current_player,True)
+    elif user_chip == current_player:
+        print("Please enter your move position")
+        row = int(input("Enter your row >> "))
+        column = int(input("Enter your column: "))
+        move_complete = game.make_move(Position(row,column),current_player,True)
+    else:
+        move_complete =  game.make_computer_move(current_player)
 
     if not move_complete:
         print("\nThat was an invalid move. Please try again")
@@ -53,6 +68,6 @@ while not game_over :
             current_player = WHITE
         else :
             current_player = BLACK
-    #game_over = Othello.is_game_over()
 
+    move_complete = False
 exit()

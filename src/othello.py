@@ -1,8 +1,5 @@
-
-
-
 from constaints import NONE,WHITE,BLACK
-from board import Board
+from game import Game
 from minmax import MinMax
 # Game Rules
 
@@ -30,40 +27,39 @@ from minmax import MinMax
 
 
 class Othello:
-    board = Board()
+    game = Game()
     computer = MinMax()
-    computer_active = False
 
     # Will make the move
     def make_move(self,position,user_chip_color,make_move):
         # Must Verifiy if a skip is present. Could Evaluate before
         # user even tries to work the problem.
-        return self.board.move(position,user_chip_color,make_move)
+        return self.game.move(position,user_chip_color,make_move)
 
     # Gets and returns the score for the black chip
     def get_black_chip_score(self):
-        return self.board.black_chip_score
+        return self.game.black_chip_score
 
     # Makes the computer acitive and sets the computer
     # chip color
     def make_computer_active(self,color):
-        self.computer.set_computer_color(color)
-        self.computer_active = True
+        self.computer.set_computer_color(color,5)
 
     # Gets the white chip color
     def get_white_chip_score(self):
-        return self.board.white_chip_score
+        return self.game.white_chip_score
 
     # Get the current game board
-    def get_board(self):
-        return self.board
+    def get_game_board(self):
+        return self.game
 
     # Gets the move the Game engine wants
     # to make
-    def get_computer_move(self,board):
+    def make_computer_move(self,color):
         # Automatically a skip if computer cant make move
-        return self.make_move(computer.find_move(board),computer.color,True)
+        return self.make_move(self.computer.find_move(self.game),color,True)
 
     # Checks if the game is over
     def is_game_over(self):
+        return False
         # Both Players dont have a move left

@@ -1,6 +1,4 @@
 
-
-
 class Position:
     """docstring for Position."""
 
@@ -13,3 +11,6 @@ class Position:
 
     def __eq__(self,other):
         return (self.row,self.column) == (other.row, other.column)
+
+    def __str__(self):
+        return f"({self.row},{self.column})\n"
