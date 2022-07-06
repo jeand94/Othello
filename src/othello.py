@@ -61,6 +61,6 @@ class Othello:
 
     # Checks if the game is over
     def is_game_over(self):
-        
-        return False
-        # TODO: Implement function
+        if bool(self.game.find_moves(WHITE)) and bool(self.game.find_moves(BLACK)):
+            return False
+        return True
