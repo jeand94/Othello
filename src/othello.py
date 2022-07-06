@@ -1,8 +1,6 @@
-
-
-
 from constaints import NONE,WHITE,BLACK
-from board import Board
+from game import Game
+from minmax import MinMax
 # Game Rules
 
 # Black always has the first move
@@ -10,7 +8,7 @@ from board import Board
 # Each Move is valid if the opponents
 # chip lies between the players chip and
 # the move position. All chips in between
-# change to the players chip Color. Can
+# change to the players chip color. Can
 # be multi zoned such as a horizontal and
 # vertical connection.
 
@@ -22,58 +20,47 @@ from board import Board
 # Once a disc has been placed on a square, it can
 # never be moved to another square later in the game.
 
-# When a player runs out of discs, but still has
-# opportunities to outflank an opposing disc, then
-# the opponent must give the player a disc to use.
+# Valid moves are from the placed chip to the next
+# found player chip. All chip between those points
+# will be flipped
 
-# Each player takes 32 discs and chooses one colour
-# to use throughout the game
 
-# valid from the placed chip to the next found player chip.
-# all chip between those points with be flipped
-
-# Objects that will be included in this program
-# User Interface class
-# Othello Game class
-# MinMax Class has moves class should be different will have a list of
-# Board class that will handle the moves.
-
-# an implementation that is better would be using a hash map.
-# the key will be the board position. This can be an array Objects
-# [0,0]. The value will be BLACK or WHITE, Witch will be constaints
-# for 1,2. When a player wants to make a move you will get his selected
-# postion ie [2,3]. You will then get a list of keys that have the player
-# value. Then you check for keys that have the same slop. Then check if they
-# are on the same path. If a you have multiple chips in path. Connect with the
-# closest chip for the move. Update the hash table. Lookup should be O(1).
-
-# This implementation will help with the minmax algorithm and making it
-# operate much faster. With array boards we would have to have n^2 lookup
-# per tree created by the minmax algorithm. Moves would take too long. Big O(n)
-# with this implementation.
-
-#psuedoCode for move
-#User selects Move [2,3]
-#Get a list Keys of the opposit player O(n)
-#Check if the new move is by the oppisit player. Add this to lists
-#Would be less work to just check following the slop given in the lists
-#till we reach the user
-#
-
-# task create the user Interface
-# create the minmax algorithm
 
 class Othello:
-    board = Board()
+    game = Game()
+    computer = MinMax()
 
+    # Will make the move
     def make_move(self,position,user_chip_color,make_move):
-        return self.board.move(position,user_chip_color,make_move)
+        # Must Verifiy if a skip is present. Could Evaluate before
+        # user even tries to work the problem.
+        return self.game.move(position,user_chip_color,make_move)
 
+    # Gets and returns the score for the black chip
     def get_black_chip_score(self):
-        return self.board.black_chip_score
+        return self.game.black_chip_score
 
+    # Makes the computer acitive and sets the computer
+    # chip color
+    def make_computer_active(self,color):
+        self.computer.set_computer_color(color,5)
+
+    # Gets the white chip color
     def get_white_chip_score(self):
-        return self.board.white_chip_score
+        return self.game.white_chip_score
 
-    def get_board(self):
-        return self.board
+    # Get the current game board
+    def get_game_board(self):
+        return self.game
+
+    # Gets the move the Game engine wants
+    # to make
+    def make_computer_move(self,color):
+        # Automatically a skip if computer cant make move
+        return self.make_move(self.computer.find_move(self.game),color,True)
+
+    # Checks if the game is over
+    def is_game_over(self):
+        if bool(self.game.find_moves(WHITE)) and bool(self.game.find_moves(BLACK)):
+            return False
+        return True
