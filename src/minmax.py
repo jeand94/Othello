@@ -1,5 +1,5 @@
 from node import Node
-from constaints import NONE,WHITE,BLACK
+from constaints import NONE,WHITE,BLACK, WEIGHTS
 from game import Game
 from position import Position
 
@@ -104,9 +104,24 @@ class MinMax :
     # This is the weight function for each game
     # board found in the tree
     def node_evaluation(self,node):
-        # TODO: Implement weight and
-        # board evaluation function
-        return 50
+        black_chip_weight = 0
+        white_chip_weight = 0
+        weight = 0
+        keys = node.game.board.keys()
+
+        for key in keys:
+            color = node.game.board[key]
+            if color == BLACK :
+                black_chip_weight += WEIGHTS[key]
+            elif color == WHITE:
+                white_chip_weight += WEIGHTS[key]
+
+        if self.color == WHITE:
+            weight = white_chip_weight - black_chip_weight
+        else:
+            weight = black_chip_weight - white_chip_weight
+
+        return weight
 
     # Copies one node to another.
     def copy_from_parent(self,child_node,node):

@@ -109,9 +109,9 @@ class Game:
         itr = 1
         rows = [1, 2, 3, 4, 5, 6, 7, 8]
         output = ""
-        output = output + "\n\n-0-  -1- -2- -3- -4- -5- -6- -7- -8-\n"
+        output += "\n\n-0-  -1- -2- -3- -4- -5- -6- -7- -8-\n"
         for row in rows:
-            output = output + (f"-{itr}- | " +
+            output += (f"-{itr}- | " +
             f"{self.board.get(Position(row, 1 ))}" +
             f" | {self.board.get(Position(row, 2 ))}" +
             f" | {self.board.get(Position(row, 3 ))}" +
@@ -122,10 +122,10 @@ class Game:
             f" | {self.board.get(Position(row, 8 ))}" +
              " |\n")
 
-            itr = itr + 1
+            itr += 1
 
-        output = output + (f"\n\nBlack player current score = {self.black_chip_score}")
-        output = output + (f"\nWhite player current score = {self.white_chip_score}\n\n")
+        output += (f"\n\nBlack player current score = {self.black_chip_score}")
+        output += (f"\nWhite player current score = {self.white_chip_score}\n\n")
 
         return output
 
@@ -138,7 +138,7 @@ class Game:
         for move in potential_moves:
             self.connect_chips(move, position, color, False)
             if(bool(move)):
-                valid_moves = valid_moves + 1
+                valid_moves += 1
                 if make_move :
                     self.update_edge_cases(move,color,position)
                     self.flip_chips(move,color)
@@ -206,7 +206,7 @@ class Game:
             elif self.board.get(Position(row, column )) == color :
                 is_done = True
                 move.update({Position(row, column):color})
-            elif row == 0 or column == 0 or self.board.get(Position(row, column )) == NONE :
+            else:
                 move.clear()
                 is_done = True
 
@@ -218,11 +218,11 @@ class Game:
         added_chips = len(move) - 2
 
         if color == BLACK:
-            self.black_chip_score = self.black_chip_score + added_chips
-            self.white_chip_score = self.white_chip_score - added_chips
+            self.black_chip_score += added_chips
+            self.white_chip_score -= added_chips
         else:
-            self.black_chip_score = self.black_chip_score - added_chips
-            self.white_chip_score = self.white_chip_score + added_chips
+            self.black_chip_score -= added_chips
+            self.white_chip_score += added_chips
 
     # This will update the edge chips for each colored chip
     def update_edge_cases(self,move,color,position):

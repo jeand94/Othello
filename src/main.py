@@ -39,7 +39,7 @@ else :
     exit()
 
 # Main while loop for the game
-while not game_over :
+while not game.is_game_over() :
 
     print(game.get_game_board())
 
